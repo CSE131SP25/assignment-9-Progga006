@@ -5,25 +5,54 @@ import java.awt.event.KeyEvent;
 import edu.princeton.cs.introcs.StdDraw;
 
 public class Game {
+	private Snake s1;
+	private Food f1;
 	
 	public Game() {
 		StdDraw.enableDoubleBuffering();
+		StdDraw.setXscale(0, 1);                    
+		StdDraw.setYscale(0, 1);
+		s1= new Snake();
+		f1= new Food();
 		
-		//FIXME - construct new Snake and Food objects
 	}
 	
 	public void play() {
-		while (true) { //TODO: Update this condition to check if snake is in bounds
+		while (s1.isInbounds()) { //TODO: Update this condition to check if snake is in bounds
 			int dir = getKeypress();
 			//Testing only: you will eventually need to do more work here
-			System.out.println("Keypress: " + dir);
+			//System.out.println("Keypress: " + dir);
+			
 			
 			/*
 			 * 1. Pass direction to your snake
+
 			 * 2. Tell the snake to move
 			 * 3. If the food has been eaten, make a new one
 			 * 4. Update the drawing
 			 */
+			
+			s1.changeDirection(dir);
+			s1.move();
+			updateDrawing();
+			if (s1.eatFood(f1)==true) {
+				int index= s1.getSize()-1;
+				double newX = s1.getSegment(index).getX() + 0.02;
+				double newY = s1.getSegment(index).getY() + 0.02;
+				s1.addSegment(newX, newY);
+				s1.isInbounds();
+				f1= new Food();
+				
+				
+
+
+				
+				
+				
+				
+			}
+			
+			
 		}
 	}
 	
@@ -45,7 +74,12 @@ public class Game {
 	 * Clears the screen, draws the snake and food, pauses, and shows the content
 	 */
 	private void updateDrawing() {
-		//FIXME
+		StdDraw.clear();
+		s1.draw();
+		f1.draw();
+		StdDraw.show();
+		StdDraw.pause(50);
+		
 		
 		/*
 		 * 1. Clear screen
